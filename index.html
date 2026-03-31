@@ -3,752 +3,911 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Kronia | IA de treino e dieta personalizada</title>
-  <meta name="description" content="Treinos e dietas gerados por IA. Evolua com o Kronia. Teste grátis por 7 dias." />
+  <title>Kronia | Treine pesado. Evolua certo.</title>
+  <meta name="description" content="O Kronia organiza seu treino, ajusta sua progressão e integra sua dieta automaticamente. Teste grátis por 7 dias." />
   <meta name="theme-color" content="#0b0b0f" />
 
   <style>
-    :root {
-      --bg: #08090c;
-      --bg-2: #10131a;
-      --card: rgba(255,255,255,0.04);
-      --card-strong: rgba(255,255,255,0.06);
-      --border: rgba(255,255,255,0.10);
-      --text: #ffffff;
-      --muted: #b8bfcc;
-      --muted-2: #8e97a8;
-      --primary: #ff6a00;
-      --primary-2: #ff8c3a;
-      --success: #22c55e;
-      --shadow: 0 18px 60px rgba(0,0,0,0.45);
-      --radius-xl: 28px;
-      --radius-lg: 22px;
-      --radius-md: 16px;
-      --max: 1180px;
+    :root{
+      --bg:#06070b;
+      --bg-2:#0d1017;
+      --panel:#11141b;
+      --panel-2:#171b23;
+      --card:rgba(255,255,255,.05);
+      --card-2:rgba(255,255,255,.07);
+      --border:rgba(255,255,255,.09);
+      --text:#ffffff;
+      --muted:#b8bfcc;
+      --muted-2:#8b94a6;
+      --primary:#ff6a00;
+      --primary-2:#ff934d;
+      --success:#22c55e;
+      --shadow:0 25px 80px rgba(0,0,0,.45);
+      --radius-xl:34px;
+      --radius-lg:24px;
+      --radius-md:16px;
+      --max:1220px;
     }
 
-    * {
-      box-sizing: border-box;
-    }
-
-    html {
-      scroll-behavior: smooth;
-    }
-
-    body {
-      margin: 0;
-      font-family: Inter, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+    *{box-sizing:border-box}
+    html{scroll-behavior:smooth}
+    body{
+      margin:0;
+      font-family:Inter,-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif;
+      color:var(--text);
       background:
-        radial-gradient(circle at top center, rgba(255,106,0,0.16), transparent 28%),
-        radial-gradient(circle at left top, rgba(255,106,0,0.10), transparent 22%),
-        linear-gradient(180deg, #07080b 0%, #0b0d12 50%, #08090c 100%);
-      color: var(--text);
-      line-height: 1.55;
-      -webkit-font-smoothing: antialiased;
-      text-rendering: optimizeLegibility;
+        radial-gradient(circle at top center, rgba(255,106,0,.18), transparent 24%),
+        radial-gradient(circle at 15% 10%, rgba(255,106,0,.08), transparent 18%),
+        linear-gradient(180deg,#05060a 0%,#0a0c12 52%,#07080c 100%);
+      line-height:1.55;
+      -webkit-font-smoothing:antialiased;
+      text-rendering:optimizeLegibility;
+    }
+
+    a{text-decoration:none;color:inherit}
+    img{display:block;max-width:100%}
+
+    .container{
+      width:100%;
+      max-width:var(--max);
+      margin:0 auto;
+      padding:0 22px;
+    }
+
+    .topbar{
+      position:sticky;
+      top:0;
+      z-index:100;
+      backdrop-filter:blur(16px);
+      background:rgba(6,7,11,.72);
+      border-bottom:1px solid rgba(255,255,255,.06);
+    }
+
+    .topbar-inner{
+      min-height:76px;
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap:18px;
+    }
+
+    .brand{
+      display:flex;
+      align-items:center;
+      gap:12px;
+      font-size:15px;
+      font-weight:900;
+      letter-spacing:.18em;
+    }
+
+    .brand-mark{
+      width:42px;
+      height:42px;
+      border-radius:14px;
+      overflow:hidden;
+      background:linear-gradient(135deg,var(--primary),var(--primary-2));
+      box-shadow:0 12px 28px rgba(255,106,0,.24);
+      flex-shrink:0;
+    }
+
+    .brand-mark img{
+      width:100%;
+      height:100%;
+      object-fit:cover;
+    }
+
+    .nav{
+      display:flex;
+      align-items:center;
+      gap:20px;
+    }
+
+    .nav a{
+      color:var(--muted);
+      font-size:14px;
+      transition:.2s ease;
+    }
+
+    .nav a:hover{color:#fff}
+
+    .nav-cta{
+      padding:12px 18px;
+      border-radius:12px;
+      font-weight:850;
+      color:#fff !important;
+      background:linear-gradient(135deg,var(--primary),var(--primary-2));
+      box-shadow:0 16px 36px rgba(255,106,0,.22);
+    }
+
+    .hero{
+      position:relative;
+      overflow:hidden;
+      padding:82px 0 70px;
+      min-height:100vh;
+      display:flex;
+      align-items:center;
+    }
+
+    .hero-bg{
+      position:absolute;
+      inset:0;
+      background:
+        linear-gradient(90deg, rgba(5,6,10,.88) 0%, rgba(5,6,10,.72) 35%, rgba(5,6,10,.58) 55%, rgba(5,6,10,.82) 100%),
+        url("https://images.unsplash.com/photo-1517836357463-d25dfeac3438?auto=format&fit=crop&w=1600&q=80") center/cover no-repeat;
+      filter:contrast(1.05) saturate(1.05);
+      transform:scale(1.02);
+    }
+
+    .hero-overlay{
+      position:absolute;
+      inset:0;
+      background:
+        radial-gradient(circle at 70% 35%, rgba(255,106,0,.20), transparent 25%),
+        radial-gradient(circle at 50% 0%, rgba(255,106,0,.10), transparent 30%);
+      pointer-events:none;
+    }
+
+    .hero-grid{
+      position:relative;
+      z-index:1;
+      display:grid;
+      grid-template-columns:1fr .95fr;
+      gap:44px;
+      align-items:center;
+      width:100%;
+    }
+
+    .eyebrow{
+      display:inline-flex;
+      align-items:center;
+      gap:8px;
+      padding:8px 14px;
+      border-radius:999px;
+      border:1px solid rgba(255,255,255,.10);
+      background:rgba(255,255,255,.04);
+      color:#ffd7bf;
+      font-size:13px;
+      font-weight:700;
+      margin-bottom:18px;
+    }
+
+    .dot{
+      width:8px;
+      height:8px;
+      border-radius:999px;
+      background:var(--primary);
+      box-shadow:0 0 0 6px rgba(255,106,0,.12);
+    }
+
+    .hero-logo{
+      width:142px;
+      margin-bottom:22px;
+      filter:drop-shadow(0 18px 40px rgba(255,106,0,.22));
+      animation:fadeUp .9s ease;
+    }
+
+    .hero h1{
+      margin:0;
+      font-size:clamp(46px,7vw,92px);
+      line-height:.9;
+      letter-spacing:-.055em;
+      font-weight:950;
+      max-width:760px;
+      animation:fadeUp 1s ease;
+    }
+
+    .hero h1 span{
+      background:linear-gradient(135deg,#ffffff 0%, #ffd6b9 40%, #ff8e46 100%);
+      -webkit-background-clip:text;
+      background-clip:text;
+      color:transparent;
+    }
+
+    .hero p{
+      margin:22px 0 0;
+      max-width:620px;
+      font-size:18px;
+      color:#dde2ea;
+      animation:fadeUp 1.1s ease;
+    }
+
+    .hero-actions{
+      display:flex;
+      flex-wrap:wrap;
+      gap:14px;
+      margin-top:30px;
+      animation:fadeUp 1.2s ease;
+    }
+
+    .btn{
+      display:inline-flex;
+      align-items:center;
+      justify-content:center;
+      min-height:58px;
+      padding:0 24px;
+      border-radius:14px;
+      border:1px solid transparent;
+      font-size:15px;
+      font-weight:850;
+      transition:.18s ease;
+      cursor:pointer;
+    }
+
+    .btn:hover{transform:translateY(-2px)}
+
+    .btn-primary{
+      color:#fff;
+      background:linear-gradient(135deg,var(--primary),var(--primary-2));
+      box-shadow:0 16px 38px rgba(255,106,0,.24);
+    }
+
+    .btn-secondary{
+      color:#fff;
+      background:rgba(255,255,255,.04);
+      border-color:rgba(255,255,255,.13);
+      backdrop-filter:blur(10px);
+    }
+
+    .hero-proof{
+      display:flex;
+      flex-wrap:wrap;
+      gap:16px 22px;
+      margin-top:22px;
+      color:#dde2ea;
+      font-size:14px;
+      animation:fadeUp 1.25s ease;
+    }
+
+    .hero-proof span{
+      display:inline-flex;
+      align-items:center;
+      gap:8px;
+    }
+
+    .mockup-wrap{
+      position:relative;
+      display:flex;
+      justify-content:center;
+      align-items:center;
+      min-height:760px;
+    }
+
+    .glow-orb{
+      position:absolute;
+      width:460px;
+      height:460px;
+      border-radius:999px;
+      background:radial-gradient(circle, rgba(255,106,0,.28), transparent 68%);
+      filter:blur(14px);
+      z-index:0;
+    }
+
+    .phone{
+      position:relative;
+      z-index:2;
+      width:350px;
+      max-width:100%;
+      padding:14px;
+      border-radius:44px;
+      background:linear-gradient(180deg,#1a1e26 0%,#08090c 100%);
+      border:1px solid rgba(255,255,255,.10);
+      box-shadow:0 46px 110px rgba(0,0,0,.60);
+    }
+
+    .phone::before{
+      content:"";
+      position:absolute;
+      top:10px;
+      left:50%;
+      transform:translateX(-50%);
+      width:122px;
+      height:28px;
+      border-radius:999px;
+      background:#040509;
+      z-index:5;
+    }
+
+    .screen{
+      position:relative;
+      overflow:hidden;
+      min-height:690px;
+      border-radius:31px;
+      background:
+        radial-gradient(circle at top center, rgba(255,106,0,.15), transparent 28%),
+        linear-gradient(180deg,#11141b 0%,#0a0c11 100%);
+      border:1px solid rgba(255,255,255,.06);
+      padding:34px 18px 18px;
+    }
+
+    .screen-top{
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap:10px;
+      margin-bottom:18px;
+    }
+
+    .screen-brand{
+      display:flex;
+      align-items:center;
+      gap:8px;
+      font-size:12px;
+      font-weight:900;
+      letter-spacing:.12em;
+    }
+
+    .screen-brand img{
+      width:24px;
+      height:24px;
+      border-radius:8px;
+      object-fit:cover;
+    }
+
+    .screen-badge{
+      padding:7px 11px;
+      border-radius:999px;
+      background:rgba(255,106,0,.14);
+      border:1px solid rgba(255,106,0,.18);
+      color:#ffd6b7;
+      font-size:11px;
+      font-weight:850;
+    }
+
+    .screen-head{
+      margin-bottom:16px;
+    }
+
+    .screen-head h3{
+      margin:0 0 6px;
+      font-size:30px;
+      line-height:1;
+      letter-spacing:-.03em;
+    }
+
+    .screen-head p{
+      margin:0;
+      color:var(--muted);
+      font-size:13px;
+    }
+
+    .stats{
+      display:grid;
+      grid-template-columns:repeat(3,1fr);
+      gap:10px;
+      margin-bottom:12px;
+    }
+
+    .stat{
+      padding:12px 10px;
+      border-radius:14px;
+      background:rgba(255,255,255,.04);
+      border:1px solid rgba(255,255,255,.06);
+      text-align:center;
     }
 
-    a {
-      text-decoration: none;
-      color: inherit;
+    .stat strong{
+      display:block;
+      font-size:18px;
+      line-height:1;
+      margin-bottom:4px;
     }
 
-    img {
-      max-width: 100%;
-      display: block;
+    .stat span{
+      color:var(--muted-2);
+      font-size:11px;
     }
 
-    .container {
-      width: 100%;
-      max-width: var(--max);
-      margin: 0 auto;
-      padding: 0 22px;
+    .panel{
+      border-radius:18px;
+      background:rgba(255,255,255,.04);
+      border:1px solid rgba(255,255,255,.06);
+      padding:14px;
+      margin-bottom:12px;
     }
 
-    .topbar {
-      position: sticky;
-      top: 0;
-      z-index: 50;
-      backdrop-filter: blur(16px);
-      background: rgba(8,9,12,0.75);
-      border-bottom: 1px solid rgba(255,255,255,0.06);
+    .panel-title{
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap:8px;
+      margin-bottom:12px;
     }
 
-    .topbar-inner {
-      min-height: 74px;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      gap: 18px;
+    .panel-title strong{
+      font-size:14px;
     }
 
-    .brand {
-      display: flex;
-      align-items: center;
-      gap: 12px;
-      font-size: 15px;
-      font-weight: 900;
-      letter-spacing: 0.18em;
+    .panel-title span{
+      color:var(--muted-2);
+      font-size:12px;
     }
 
-    .brand-mark {
-      width: 42px;
-      height: 42px;
-      border-radius: 14px;
-      overflow: hidden;
-      background: linear-gradient(135deg, var(--primary), var(--primary-2));
-      box-shadow: 0 12px 30px rgba(255,106,0,0.25);
-      flex-shrink: 0;
+    .workout-list{
+      display:grid;
+      gap:10px;
     }
-
-    .brand-mark img {
-      width: 100%;
-      height: 100%;
-      object-fit: cover;
+
+    .workout-item{
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap:10px;
+      padding:12px;
+      border-radius:14px;
+      background:rgba(255,255,255,.035);
+      border:1px solid rgba(255,255,255,.05);
+    }
+
+    .workout-item strong{
+      display:block;
+      font-size:14px;
+      margin-bottom:3px;
     }
 
-    .nav {
-      display: flex;
-      align-items: center;
-      gap: 20px;
+    .workout-item small{
+      color:var(--muted-2);
+      font-size:12px;
     }
 
-    .nav a {
-      color: var(--muted);
-      font-size: 14px;
-      transition: 0.2s ease;
+    .tag{
+      padding:7px 9px;
+      border-radius:999px;
+      font-size:11px;
+      font-weight:850;
+      white-space:nowrap;
     }
 
-    .nav a:hover {
-      color: #fff;
+    .tag-orange{
+      background:rgba(255,106,0,.14);
+      color:#ffd6ba;
+      border:1px solid rgba(255,106,0,.18);
     }
 
-    .nav-cta {
-      padding: 12px 18px;
-      border-radius: 12px;
-      font-weight: 800;
-      background: linear-gradient(135deg, var(--primary), var(--primary-2));
-      color: #fff !important;
-      box-shadow: 0 12px 28px rgba(255,106,0,0.24);
-    }
-
-    .hero {
-      position: relative;
-      overflow: hidden;
-      padding: 86px 0 64px;
-    }
+    .tag-green{
+      background:rgba(34,197,94,.12);
+      color:#bcf7cf;
+      border:1px solid rgba(34,197,94,.18);
+    }
 
-    .hero::before {
-      content: "";
-      position: absolute;
-      inset: 0;
-      background: url("./splash.png") center 120px / 520px no-repeat;
-      opacity: 0.05;
-      filter: blur(34px);
-      pointer-events: none;
-    }
-
-    .hero-grid {
-      position: relative;
-      z-index: 1;
-      display: grid;
-      grid-template-columns: 1.1fr 0.9fr;
-      gap: 34px;
-      align-items: center;
-    }
-
-    .eyebrow {
-      display: inline-flex;
-      align-items: center;
-      gap: 8px;
-      margin-bottom: 18px;
-      padding: 8px 14px;
-      border: 1px solid rgba(255,255,255,0.10);
-      border-radius: 999px;
-      background: rgba(255,255,255,0.03);
-      color: #ffd7bf;
-      font-size: 13px;
-      font-weight: 700;
-    }
-
-    .dot {
-      width: 8px;
-      height: 8px;
-      border-radius: 999px;
-      background: var(--primary);
-      box-shadow: 0 0 0 6px rgba(255,106,0,0.12);
-    }
-
-    .hero-logo {
-      width: 132px;
-      margin-bottom: 22px;
-      filter: drop-shadow(0 18px 40px rgba(255,106,0,0.22));
-      animation: fadeUp 0.9s ease;
-    }
-
-    .hero h1 {
-      margin: 0;
-      font-size: clamp(40px, 6vw, 72px);
-      line-height: 0.95;
-      letter-spacing: -0.04em;
-      font-weight: 900;
-      animation: fadeUp 1s ease;
-    }
-
-    .hero h1 span {
-      background: linear-gradient(135deg, #ffffff 0%, #ffd7bf 35%, #ff8c3a 100%);
-      -webkit-background-clip: text;
-      background-clip: text;
-      color: transparent;
-    }
-
-    .hero p {
-      margin: 22px 0 0;
-      max-width: 650px;
-      color: var(--muted);
-      font-size: 18px;
-      animation: fadeUp 1.1s ease;
-    }
-
-    .hero-actions {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 14px;
-      margin-top: 32px;
-      animation: fadeUp 1.2s ease;
-    }
-
-    .btn {
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
-      gap: 10px;
-      min-height: 56px;
-      padding: 0 22px;
-      border-radius: 14px;
-      border: 1px solid transparent;
-      font-weight: 800;
-      font-size: 15px;
-      transition: transform 0.18s ease, box-shadow 0.18s ease, border-color 0.18s ease, background 0.18s ease;
-      cursor: pointer;
-    }
-
-    .btn:hover {
-      transform: translateY(-2px);
-    }
-
-    .btn-primary {
-      background: linear-gradient(135deg, var(--primary), var(--primary-2));
-      color: #fff;
-      box-shadow: 0 16px 34px rgba(255,106,0,0.24);
-    }
-
-    .btn-secondary {
-      background: rgba(255,255,255,0.03);
-      color: #fff;
-      border-color: rgba(255,255,255,0.12);
-    }
-
-    .hero-proof {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 16px 22px;
-      margin-top: 24px;
-      color: var(--muted);
-      font-size: 14px;
-      animation: fadeUp 1.3s ease;
-    }
-
-    .hero-proof span {
-      display: inline-flex;
-      align-items: center;
-      gap: 8px;
+    .screen-btn{
+      width:100%;
+      margin-top:4px;
     }
 
-    .hero-card {
-      background: linear-gradient(180deg, rgba(255,255,255,0.06), rgba(255,255,255,0.03));
-      border: 1px solid rgba(255,255,255,0.10);
-      border-radius: 30px;
-      padding: 22px;
-      box-shadow: var(--shadow);
-      position: relative;
-      overflow: hidden;
-    }
-
-    .hero-card::after {
-      content: "";
-      position: absolute;
-      top: -60px;
-      right: -60px;
-      width: 220px;
-      height: 220px;
-      background: radial-gradient(circle, rgba(255,106,0,0.24), transparent 70%);
-      pointer-events: none;
+    .floating-card{
+      position:absolute;
+      z-index:3;
+      width:240px;
+      padding:16px;
+      border-radius:20px;
+      background:linear-gradient(180deg, rgba(255,255,255,.10), rgba(255,255,255,.05));
+      border:1px solid rgba(255,255,255,.10);
+      box-shadow:var(--shadow);
+      backdrop-filter:blur(12px);
     }
 
-    .app-preview {
-      border-radius: 24px;
-      border: 1px solid rgba(255,255,255,0.08);
-      background: linear-gradient(180deg, #12151c 0%, #0b0d12 100%);
-      padding: 18px;
-      position: relative;
-      z-index: 1;
+    .floating-card strong{
+      display:block;
+      font-size:14px;
+      margin-bottom:6px;
     }
 
-    .app-top {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      margin-bottom: 18px;
+    .floating-card span{
+      color:#e6eaf1;
+      font-size:13px;
     }
 
-    .mini-brand {
-      font-size: 13px;
-      font-weight: 800;
-      letter-spacing: 0.14em;
+    .float-left{
+      left:0;
+      top:120px;
     }
 
-    .mini-badge {
-      padding: 8px 12px;
-      border-radius: 999px;
-      font-size: 12px;
-      font-weight: 800;
-      background: rgba(255,106,0,0.14);
-      color: #ffd2b5;
-      border: 1px solid rgba(255,106,0,0.22);
+    .float-right{
+      right:0;
+      bottom:100px;
     }
 
-    .preview-box {
-      display: grid;
-      gap: 14px;
+    .section{
+      padding:84px 0;
+      position:relative;
     }
 
-    .preview-panel {
-      background: rgba(255,255,255,0.04);
-      border: 1px solid rgba(255,255,255,0.08);
-      border-radius: 18px;
-      padding: 16px;
+    .section-header{
+      text-align:center;
+      max-width:780px;
+      margin:0 auto 34px;
     }
 
-    .preview-title {
-      font-size: 13px;
-      color: var(--muted);
-      margin-bottom: 10px;
+    .section-header h2{
+      margin:0 0 10px;
+      font-size:clamp(32px,4vw,54px);
+      letter-spacing:-.04em;
+      line-height:.95;
     }
 
-    .metric-row {
-      display: grid;
-      grid-template-columns: repeat(3, 1fr);
-      gap: 12px;
+    .section-header p{
+      margin:0;
+      color:var(--muted);
+      font-size:17px;
     }
 
-    .metric {
-      background: rgba(255,255,255,0.04);
-      border-radius: 14px;
-      padding: 14px 12px;
-      border: 1px solid rgba(255,255,255,0.07);
+    .grid-3{
+      display:grid;
+      grid-template-columns:repeat(3,1fr);
+      gap:20px;
     }
 
-    .metric strong {
-      display: block;
-      font-size: 20px;
-      margin-bottom: 4px;
+    .grid-2{
+      display:grid;
+      grid-template-columns:repeat(2,1fr);
+      gap:20px;
     }
 
-    .metric span {
-      color: var(--muted-2);
-      font-size: 12px;
+    .card{
+      background:linear-gradient(180deg, rgba(255,255,255,.05), rgba(255,255,255,.03));
+      border:1px solid rgba(255,255,255,.08);
+      border-radius:24px;
+      padding:24px;
+      box-shadow:var(--shadow);
     }
 
-    .exercise-list {
-      display: grid;
-      gap: 10px;
+    .icon{
+      width:52px;
+      height:52px;
+      border-radius:16px;
+      display:grid;
+      place-items:center;
+      margin-bottom:16px;
+      background:linear-gradient(135deg, rgba(255,106,0,.22), rgba(255,147,77,.12));
+      border:1px solid rgba(255,106,0,.22);
+      font-size:22px;
     }
 
-    .exercise-item {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      gap: 12px;
-      padding: 12px 14px;
-      border-radius: 14px;
-      background: rgba(255,255,255,0.035);
-      border: 1px solid rgba(255,255,255,0.06);
-      font-size: 14px;
+    .card h3{
+      margin:0 0 10px;
+      font-size:22px;
+      letter-spacing:-.02em;
     }
 
-    .exercise-item b {
-      display: block;
-      font-size: 14px;
-      margin-bottom: 3px;
+    .card p{
+      margin:0;
+      color:var(--muted);
     }
 
-    .exercise-item small {
-      color: var(--muted-2);
+    .flow{
+      display:grid;
+      grid-template-columns:repeat(3,1fr);
+      gap:20px;
     }
 
-    .tag {
-      padding: 8px 10px;
-      border-radius: 999px;
-      background: rgba(34,197,94,0.10);
-      color: #b3f5c8;
-      border: 1px solid rgba(34,197,94,0.18);
-      font-weight: 700;
-      font-size: 12px;
-      white-space: nowrap;
+    .step{
+      position:relative;
+      padding:28px 22px;
+      border-radius:24px;
+      background:linear-gradient(180deg, rgba(255,255,255,.05), rgba(255,255,255,.03));
+      border:1px solid rgba(255,255,255,.08);
+      box-shadow:var(--shadow);
     }
 
-    .section {
-      padding: 44px 0;
+    .step-number{
+      width:42px;
+      height:42px;
+      border-radius:14px;
+      display:grid;
+      place-items:center;
+      font-weight:900;
+      margin-bottom:14px;
+      background:linear-gradient(135deg,var(--primary),var(--primary-2));
+      box-shadow:0 14px 28px rgba(255,106,0,.20);
     }
 
-    .section-header {
-      text-align: center;
-      max-width: 760px;
-      margin: 0 auto 28px;
+    .step h3{
+      margin:0 0 8px;
+      font-size:22px;
+      letter-spacing:-.02em;
     }
 
-    .section-header h2 {
-      margin: 0 0 10px;
-      font-size: clamp(30px, 4vw, 46px);
-      letter-spacing: -0.03em;
+    .step p{
+      margin:0;
+      color:var(--muted);
     }
 
-    .section-header p {
-      margin: 0;
-      color: var(--muted);
-      font-size: 17px;
+    .compare{
+      display:grid;
+      grid-template-columns:1fr 1fr;
+      gap:20px;
     }
 
-    .grid-3 {
-      display: grid;
-      grid-template-columns: repeat(3, 1fr);
-      gap: 20px;
+    .compare-box{
+      border-radius:26px;
+      padding:26px;
+      box-shadow:var(--shadow);
     }
 
-    .feature-card,
-    .plan-card,
-    .value-card,
-    .cta-box {
-      background: linear-gradient(180deg, rgba(255,255,255,0.05), rgba(255,255,255,0.03));
-      border: 1px solid rgba(255,255,255,0.08);
-      border-radius: 24px;
-      padding: 24px;
-      box-shadow: var(--shadow);
+    .compare-box.bad{
+      background:linear-gradient(180deg, rgba(255,255,255,.04), rgba(255,255,255,.025));
+      border:1px solid rgba(255,255,255,.08);
     }
 
-    .feature-icon {
-      width: 52px;
-      height: 52px;
-      border-radius: 16px;
-      display: grid;
-      place-items: center;
-      margin-bottom: 16px;
-      background: linear-gradient(135deg, rgba(255,106,0,0.22), rgba(255,140,58,0.12));
-      border: 1px solid rgba(255,106,0,0.22);
-      font-size: 22px;
+    .compare-box.good{
+      background:linear-gradient(180deg, rgba(255,106,0,.14), rgba(255,255,255,.04));
+      border:1px solid rgba(255,106,0,.18);
     }
 
-    .feature-card h3,
-    .value-card h3,
-    .plan-card h3 {
-      margin: 0 0 10px;
-      font-size: 22px;
-      letter-spacing: -0.02em;
+    .compare-box h3{
+      margin:0 0 16px;
+      font-size:28px;
+      letter-spacing:-.03em;
     }
 
-    .feature-card p,
-    .value-card p {
-      margin: 0;
-      color: var(--muted);
+    .compare-list{
+      display:grid;
+      gap:12px;
+      margin:0;
+      padding:0;
+      list-style:none;
     }
 
-    .value-grid {
-      display: grid;
-      grid-template-columns: repeat(2, 1fr);
-      gap: 20px;
+    .compare-list li{
+      display:flex;
+      gap:10px;
+      color:var(--muted);
+      font-size:16px;
     }
 
-    .plans {
-      display: grid;
-      grid-template-columns: repeat(3, 1fr);
-      gap: 22px;
-      align-items: stretch;
+    .compare-box.good .compare-list li{
+      color:#f4f6fa;
     }
 
-    .plan-card {
-      position: relative;
-      display: flex;
-      flex-direction: column;
+    .compare-list li::before{
+      content:"•";
+      font-weight:900;
     }
 
-    .plan-card.popular {
-      transform: scale(1.02);
-      border-color: rgba(255,106,0,0.28);
-      background: linear-gradient(180deg, rgba(255,106,0,0.12), rgba(255,255,255,0.04));
-      box-shadow: 0 26px 70px rgba(255,106,0,0.16);
+    .plans{
+      display:grid;
+      grid-template-columns:repeat(3,1fr);
+      gap:22px;
+      align-items:stretch;
     }
 
-    .popular-badge {
-      position: absolute;
-      top: 16px;
-      right: 16px;
-      padding: 8px 12px;
-      border-radius: 999px;
-      background: linear-gradient(135deg, var(--primary), var(--primary-2));
-      color: #fff;
-      font-size: 12px;
-      font-weight: 800;
+    .plan{
+      position:relative;
+      display:flex;
+      flex-direction:column;
+      background:linear-gradient(180deg, rgba(255,255,255,.05), rgba(255,255,255,.03));
+      border:1px solid rgba(255,255,255,.08);
+      border-radius:26px;
+      padding:26px;
+      box-shadow:var(--shadow);
     }
 
-    .plan-name {
-      font-size: 26px;
-      font-weight: 800;
-      margin-bottom: 8px;
+    .plan.popular{
+      transform:scale(1.03);
+      background:linear-gradient(180deg, rgba(255,106,0,.14), rgba(255,255,255,.04));
+      border-color:rgba(255,106,0,.22);
+      box-shadow:0 30px 80px rgba(255,106,0,.15);
     }
 
-    .plan-subtitle {
-      color: var(--muted);
-      min-height: 46px;
-      margin-bottom: 20px;
+    .popular-badge{
+      position:absolute;
+      top:16px;
+      right:16px;
+      padding:8px 12px;
+      border-radius:999px;
+      background:linear-gradient(135deg,var(--primary),var(--primary-2));
+      color:#fff;
+      font-size:12px;
+      font-weight:850;
     }
 
-    .price {
-      display: flex;
-      align-items: flex-end;
-      gap: 6px;
-      margin-bottom: 18px;
+    .plan-name{
+      font-size:28px;
+      font-weight:900;
+      margin-bottom:8px;
     }
 
-    .price strong {
-      font-size: 44px;
-      line-height: 1;
-      letter-spacing: -0.04em;
+    .plan-subtitle{
+      color:var(--muted);
+      min-height:48px;
+      margin-bottom:20px;
     }
 
-    .price span {
-      color: var(--muted);
-      font-size: 15px;
-      margin-bottom: 6px;
+    .price{
+      display:flex;
+      align-items:flex-end;
+      gap:6px;
+      margin-bottom:18px;
     }
 
-    .price-note {
-      margin-bottom: 18px;
-      color: #ffd8bf;
-      font-size: 14px;
-      font-weight: 700;
+    .price strong{
+      font-size:46px;
+      line-height:1;
+      letter-spacing:-.05em;
     }
 
-    .plan-list {
-      display: grid;
-      gap: 12px;
-      margin: 0 0 24px;
-      padding: 0;
-      list-style: none;
+    .price span{
+      color:var(--muted);
+      font-size:15px;
+      margin-bottom:7px;
     }
 
-    .plan-list li {
-      display: flex;
-      gap: 10px;
-      color: var(--muted);
-      font-size: 15px;
+    .price-note{
+      margin-bottom:18px;
+      color:#ffd6b7;
+      font-size:14px;
+      font-weight:700;
     }
 
-    .plan-list li::before {
-      content: "✓";
-      color: #fff;
-      font-weight: 900;
+    .plan-list{
+      display:grid;
+      gap:12px;
+      margin:0 0 24px;
+      padding:0;
+      list-style:none;
     }
 
-    .plan-card .btn {
-      margin-top: auto;
-      width: 100%;
+    .plan-list li{
+      display:flex;
+      gap:10px;
+      color:var(--muted);
+      font-size:15px;
     }
 
-    .compare {
-      overflow-x: auto;
-      border-radius: 24px;
-      border: 1px solid rgba(255,255,255,0.08);
-      background: linear-gradient(180deg, rgba(255,255,255,0.04), rgba(255,255,255,0.03));
-      box-shadow: var(--shadow);
+    .plan-list li::before{
+      content:"✓";
+      color:#fff;
+      font-weight:900;
     }
 
-    table {
-      width: 100%;
-      border-collapse: collapse;
-      min-width: 760px;
+    .plan .btn{
+      width:100%;
+      margin-top:auto;
     }
 
-    th, td {
-      padding: 18px 18px;
-      text-align: left;
-      border-bottom: 1px solid rgba(255,255,255,0.07);
+    .results{
+      display:grid;
+      grid-template-columns:repeat(4,1fr);
+      gap:18px;
     }
 
-    th {
-      color: #fff;
-      font-size: 14px;
-      background: rgba(255,255,255,0.03);
+    .result{
+      text-align:center;
+      padding:24px 16px;
+      border-radius:24px;
+      background:linear-gradient(180deg, rgba(255,255,255,.05), rgba(255,255,255,.03));
+      border:1px solid rgba(255,255,255,.08);
+      box-shadow:var(--shadow);
     }
 
-    td {
-      color: var(--muted);
-      font-size: 15px;
+    .result strong{
+      display:block;
+      font-size:36px;
+      line-height:1;
+      margin-bottom:8px;
+      letter-spacing:-.04em;
     }
 
-    .check {
-      color: #baf7cc;
-      font-weight: 800;
+    .result span{
+      color:var(--muted);
+      font-size:15px;
     }
 
-    .dash {
-      color: #6d7687;
+    .cta-box{
+      position:relative;
+      overflow:hidden;
+      text-align:center;
+      padding:50px 24px;
+      border-radius:32px;
+      background:linear-gradient(135deg, rgba(255,106,0,.20), rgba(255,255,255,.05));
+      border:1px solid rgba(255,106,0,.18);
+      box-shadow:var(--shadow);
     }
 
-    .cta-section {
-      padding: 56px 0 84px;
+    .cta-box::before{
+      content:"";
+      position:absolute;
+      inset:0;
+      background:radial-gradient(circle at center, rgba(255,106,0,.24), transparent 55%);
+      pointer-events:none;
     }
 
-    .cta-box {
-      position: relative;
-      overflow: hidden;
-      text-align: center;
-      padding: 38px 24px;
-      border-radius: 28px;
-      background: linear-gradient(135deg, rgba(255,106,0,0.18), rgba(255,255,255,0.05));
-      border: 1px solid rgba(255,106,0,0.18);
+    .cta-box > *{
+      position:relative;
+      z-index:1;
     }
 
-    .cta-box::before {
-      content: "";
-      position: absolute;
-      inset: 0;
-      background: radial-gradient(circle at center, rgba(255,106,0,0.22), transparent 55%);
-      pointer-events: none;
+    .cta-box h2{
+      margin:0 0 12px;
+      font-size:clamp(34px,4vw,58px);
+      line-height:.95;
+      letter-spacing:-.04em;
     }
 
-    .cta-box > * {
-      position: relative;
-      z-index: 1;
+    .cta-box p{
+      margin:0 auto 24px;
+      max-width:760px;
+      color:#eef1f6;
+      font-size:17px;
     }
 
-    .cta-box h2 {
-      margin: 0 0 12px;
-      font-size: clamp(30px, 4vw, 52px);
-      letter-spacing: -0.03em;
+    .footer{
+      border-top:1px solid rgba(255,255,255,.06);
+      padding:30px 0 40px;
     }
 
-    .cta-box p {
-      margin: 0 auto 24px;
-      max-width: 720px;
-      color: #e7eaf0;
-      font-size: 17px;
+    .footer-inner{
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap:20px;
+      color:var(--muted-2);
+      font-size:14px;
     }
 
-    .footer {
-      border-top: 1px solid rgba(255,255,255,0.06);
-      padding: 28px 0 40px;
+    @keyframes fadeUp{
+      from{opacity:0;transform:translateY(12px)}
+      to{opacity:1;transform:translateY(0)}
     }
 
-    .footer-inner {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      gap: 20px;
-      color: var(--muted-2);
-      font-size: 14px;
+    @media (max-width:1120px){
+      .float-left,.float-right{display:none}
+      .results{grid-template-columns:repeat(2,1fr)}
     }
 
-    @keyframes fadeUp {
-      from {
-        opacity: 0;
-        transform: translateY(12px);
+    @media (max-width:980px){
+      .hero-grid,.grid-3,.grid-2,.flow,.compare,.plans{
+        grid-template-columns:1fr;
       }
-      to {
-        opacity: 1;
-        transform: translateY(0);
+
+      .hero{
+        min-height:auto;
+        padding-top:110px;
+      }
+
+      .hero-left{
+        text-align:center;
+      }
+
+      .hero-logo{
+        margin-left:auto;
+        margin-right:auto;
+      }
+
+      .hero p,.section-header,.cta-box p{
+        margin-left:auto;
+        margin-right:auto;
+      }
+
+      .hero-actions,.hero-proof{
+        justify-content:center;
+      }
+
+      .mockup-wrap{
+        min-height:auto;
+      }
+
+      .nav a:not(.nav-cta){
+        display:none;
+      }
+
+      .plan.popular{
+        transform:none;
       }
     }
 
-    @media (max-width: 980px) {
-      .hero-grid,
-      .grid-3,
-      .plans,
-      .value-grid {
-        grid-template-columns: 1fr;
-      }
-
-      .hero {
-        padding-top: 60px;
-      }
-
-      .hero-logo {
-        margin-left: auto;
-        margin-right: auto;
-      }
-
-      .hero-left {
-        text-align: center;
-      }
-
-      .hero p,
-      .section-header,
-      .cta-box p {
-        margin-left: auto;
-        margin-right: auto;
-      }
-
-      .hero-actions,
-      .hero-proof {
-        justify-content: center;
-      }
-
-      .nav a:not(.nav-cta) {
-        display: none;
-      }
-
-      .plan-card.popular {
-        transform: none;
-      }
-    }
-
-    @media (max-width: 640px) {
-      .container {
-        padding: 0 16px;
-      }
-
-      .topbar-inner {
-        min-height: 68px;
-      }
-
-      .hero {
-        padding: 44px 0 42px;
-      }
-
-      .hero::before {
-        background-size: 300px;
-        background-position: center 90px;
-      }
-
-      .hero-logo {
-        width: 110px;
-      }
-
-      .btn {
-        width: 100%;
-      }
-
-      .hero-actions {
-        flex-direction: column;
-      }
-
-      .metric-row {
-        grid-template-columns: 1fr;
-      }
-
-      .footer-inner {
-        flex-direction: column;
-        text-align: center;
+    @media (max-width:640px){
+      .container{padding:0 16px}
+      .topbar-inner{min-height:68px}
+      .hero{padding:96px 0 42px}
+      .btn{width:100%}
+      .hero-actions{flex-direction:column}
+      .phone{width:100%;max-width:344px}
+      .screen{min-height:650px}
+      .stats,.results{grid-template-columns:1fr}
+      .footer-inner{
+        flex-direction:column;
+        text-align:center;
       }
     }
   </style>
@@ -758,137 +917,204 @@
   <header class="topbar">
     <div class="container topbar-inner">
       <a href="#" class="brand">
-        <span class="brand-mark">
-          <img src="./splash.png" alt="Kronia" />
-        </span>
+        <span class="brand-mark"><img src="./splash.png" alt="Kronia"></span>
         KRONIA
       </a>
 
       <nav class="nav">
+        <a href="#como-funciona">Como funciona</a>
         <a href="#beneficios">Benefícios</a>
         <a href="#planos">Planos</a>
-        <a href="#comparacao">Comparação</a>
-        <a href="/app" class="nav-cta">Começar agora</a>
+        <a href="/app" class="nav-cta">Testar Ultra</a>
       </nav>
     </div>
   </header>
 
   <main>
     <section class="hero">
+      <div class="hero-bg"></div>
+      <div class="hero-overlay"></div>
+
       <div class="container hero-grid">
         <div class="hero-left">
-          <div class="eyebrow">
-            <span class="dot"></span>
-            IA aplicada a treino e dieta de forma prática
-          </div>
+          <div class="eyebrow"><span class="dot"></span> Sistema inteligente de evolução física</div>
 
           <img src="./splash.png" alt="Logo Kronia" class="hero-logo" />
 
           <h1>
-            Seu coach inteligente para <span>treino, dieta e evolução real</span>
+            Treine pesado.<br>
+            <span>Evolua certo.</span>
           </h1>
 
           <p>
-            O Kronia ajusta seu treino, acompanha sua evolução, organiza sua dieta e entrega uma experiência premium com inteligência real, sem achismo e sem plano genérico.
+            O Kronia organiza seu treino, ajusta sua progressão e integra sua dieta automaticamente. Você só executa.
           </p>
 
           <div class="hero-actions">
             <a href="/app" class="btn btn-primary">Começar grátis por 7 dias</a>
-            <a href="#planos" class="btn btn-secondary">Ver planos</a>
+            <a href="#como-funciona" class="btn btn-secondary">Ver como funciona</a>
           </div>
 
           <div class="hero-proof">
-            <span>✔ Ajuste inteligente de treino</span>
-            <span>✔ Dieta personalizada</span>
-            <span>✔ Foco total em evolução</span>
+            <span>✔ Treino estruturado</span>
+            <span>✔ Dieta integrada</span>
+            <span>✔ Progressão automática</span>
           </div>
         </div>
 
-        <div class="hero-card">
-          <div class="app-preview">
-            <div class="app-top">
-              <div class="mini-brand">KRONIA / ULTRA</div>
-              <div class="mini-badge">7 dias grátis</div>
-            </div>
+        <div class="mockup-wrap">
+          <div class="glow-orb"></div>
 
-            <div class="preview-box">
-              <div class="preview-panel">
-                <div class="preview-title">Visão geral</div>
-                <div class="metric-row">
-                  <div class="metric">
-                    <strong>MEV</strong>
-                    <span>volume mínimo eficaz</span>
+          <div class="floating-card float-left">
+            <strong>Você treina</strong>
+            <span>O sistema ajusta carga, volume e direção por trás.</span>
+          </div>
+
+          <div class="phone">
+            <div class="screen">
+              <div class="screen-top">
+                <div class="screen-brand">
+                  <img src="./splash.png" alt="Kronia">
+                  KRONIA
+                </div>
+                <div class="screen-badge">ULTRA</div>
+              </div>
+
+              <div class="screen-head">
+                <h3>Treino de hoje</h3>
+                <p>Peito + costas • treino pesado</p>
+              </div>
+
+              <div class="stats">
+                <div class="stat">
+                  <strong>6</strong>
+                  <span>exercícios</span>
+                </div>
+                <div class="stat">
+                  <strong>54</strong>
+                  <span>min</span>
+                </div>
+                <div class="stat">
+                  <strong>+12%</strong>
+                  <span>evolução</span>
+                </div>
+              </div>
+
+              <div class="panel">
+                <div class="panel-title">
+                  <strong>Plano em ação</strong>
+                  <span>ajuste ativo</span>
+                </div>
+
+                <div class="workout-list">
+                  <div class="workout-item">
+                    <div>
+                      <strong>Supino reto</strong>
+                      <small>4x8 • carga recalculada</small>
+                    </div>
+                    <span class="tag tag-orange">principal</span>
                   </div>
-                  <div class="metric">
-                    <strong>MAV</strong>
-                    <span>volume adaptativo</span>
+
+                  <div class="workout-item">
+                    <div>
+                      <strong>Levantamento terra</strong>
+                      <small>4x6 • treino pesado</small>
+                    </div>
+                    <span class="tag tag-orange">forte</span>
                   </div>
-                  <div class="metric">
-                    <strong>MRV</strong>
-                    <span>limite recuperável</span>
+
+                  <div class="workout-item">
+                    <div>
+                      <strong>Remada curvada</strong>
+                      <small>3x10 • fadiga controlada</small>
+                    </div>
+                    <span class="tag tag-green">ok</span>
                   </div>
                 </div>
               </div>
 
-              <div class="preview-panel">
-                <div class="preview-title">Treino do dia</div>
-                <div class="exercise-list">
-                  <div class="exercise-item">
+              <div class="panel">
+                <div class="panel-title">
+                  <strong>Dieta integrada</strong>
+                  <span>meta ativa</span>
+                </div>
+
+                <div class="workout-list">
+                  <div class="workout-item">
                     <div>
-                      <b>Supino reto</b>
-                      <small>4 séries • progressão ativa</small>
+                      <strong>Plano alimentar</strong>
+                      <small>proteína e calorias alinhadas</small>
                     </div>
-                    <span class="tag">Carga ajustada</span>
-                  </div>
-                  <div class="exercise-item">
-                    <div>
-                      <b>Agachamento livre</b>
-                      <small>3 séries • fadiga monitorada</small>
-                    </div>
-                    <span class="tag">IA otimizada</span>
-                  </div>
-                  <div class="exercise-item">
-                    <div>
-                      <b>Dieta do dia</b>
-                      <small>meta calórica e proteína alinhadas</small>
-                    </div>
-                    <span class="tag">Plano ativo</span>
+                    <span class="tag tag-green">ativo</span>
                   </div>
                 </div>
               </div>
+
+              <a href="/app" class="btn btn-primary screen-btn">Iniciar agora</a>
             </div>
           </div>
+
+          <div class="floating-card float-right">
+            <strong>Você não precisa pensar</strong>
+            <span>Treino, dieta e evolução ficam organizados no mesmo sistema.</span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="section" id="como-funciona">
+      <div class="container">
+        <div class="section-header">
+          <h2>O que acontece quando você entra</h2>
+          <p>Uma jornada simples, clara e com foco em resultado desde o primeiro acesso.</p>
         </div>
 
+        <div class="flow">
+          <div class="step">
+            <div class="step-number">1</div>
+            <h3>Você define seu objetivo</h3>
+            <p>Hipertrofia, definição ou evolução mais consistente.</p>
+          </div>
+
+          <div class="step">
+            <div class="step-number">2</div>
+            <h3>O Kronia organiza tudo</h3>
+            <p>Treino, dieta e progressão entram na mesma lógica.</p>
+          </div>
+
+          <div class="step">
+            <div class="step-number">3</div>
+            <h3>Você só executa</h3>
+            <p>Menos dúvida, menos bagunça e mais direção para evoluir.</p>
+          </div>
+        </div>
       </div>
     </section>
 
     <section class="section" id="beneficios">
       <div class="container">
         <div class="section-header">
-          <h2>Mais que um app comum</h2>
-          <p>
-            O Kronia foi pensado para parecer e funcionar como um produto premium, entregando direção, personalização e clareza para quem quer resultado de verdade.
-          </p>
+          <h2>Você não precisa mais pensar em tudo</h2>
+          <p>O grande valor não é só treinar. É treinar com direção, progressão e consistência.</p>
         </div>
 
         <div class="grid-3">
-          <div class="feature-card">
-            <div class="feature-icon">🧠</div>
-            <h3>IA inteligente</h3>
-            <p>Entende seu momento, evolução, carga e objetivo para ajustar o plano com muito mais lógica do que apps genéricos.</p>
+          <div class="card">
+            <div class="icon">🧠</div>
+            <h3>Treino inteligente</h3>
+            <p>O sistema ajuda a organizar sua execução com mais lógica e menos achismo.</p>
           </div>
 
-          <div class="feature-card">
-            <div class="feature-icon">🏋️</div>
-            <h3>Treino otimizado</h3>
-            <p>Organiza volume, esforço e progressão com base em estrutura científica, reduzindo erro e melhorando constância.</p>
+          <div class="card">
+            <div class="icon">🥗</div>
+            <h3>Dieta integrada</h3>
+            <p>A alimentação fica conectada ao objetivo, sem ficar solta do resto da jornada.</p>
           </div>
 
-          <div class="feature-card">
-            <div class="feature-icon">🥗</div>
-            <h3>Dieta personalizada</h3>
-            <p>Entrega um plano alimentar alinhado ao seu objetivo, evitando cardápios aleatórios e respostas superficiais.</p>
+          <div class="card">
+            <div class="icon">📈</div>
+            <h3>Evolução visível</h3>
+            <p>Você acompanha progresso, ajustes e constância em um só lugar.</p>
           </div>
         </div>
       </div>
@@ -897,21 +1123,57 @@
     <section class="section">
       <div class="container">
         <div class="section-header">
-          <h2>Por que o Kronia se destaca</h2>
-          <p>
-            Você não precisa mais juntar vários apps, planilhas e anotações para acompanhar sua evolução.
-          </p>
+          <h2>O que muda quando você usa Kronia</h2>
+          <p>O esforço continua seu. A direção deixa de ser no escuro.</p>
         </div>
 
-        <div class="value-grid">
-          <div class="value-card">
-            <h3>Menos tentativa e erro</h3>
-            <p>O Kronia reduz decisões confusas e acelera o caminho para consistência, organização e progresso real.</p>
+        <div class="results">
+          <div class="result">
+            <strong>+ foco</strong>
+            <span>na execução</span>
+          </div>
+          <div class="result">
+            <strong>+ clareza</strong>
+            <span>na rotina</span>
+          </div>
+          <div class="result">
+            <strong>+ constância</strong>
+            <span>na evolução</span>
+          </div>
+          <div class="result">
+            <strong>- achismo</strong>
+            <span>no processo</span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="section">
+      <div class="container">
+        <div class="section-header">
+          <h2>Antes x com Kronia</h2>
+          <p>É aqui que a percepção muda de vez.</p>
+        </div>
+
+        <div class="compare">
+          <div class="compare-box bad">
+            <h3>Antes</h3>
+            <ul class="compare-list">
+              <li>Treino solto</li>
+              <li>Dieta desconectada</li>
+              <li>Sem clareza de progressão</li>
+              <li>Muita dúvida no caminho</li>
+            </ul>
           </div>
 
-          <div class="value-card">
-            <h3>Tudo em um só lugar</h3>
-            <p>Treino, dieta, ajustes, lógica de progressão e experiência premium reunidos em uma única plataforma.</p>
+          <div class="compare-box good">
+            <h3>Com Kronia</h3>
+            <ul class="compare-list">
+              <li>Treino estruturado</li>
+              <li>Dieta integrada</li>
+              <li>Evolução mais organizada</li>
+              <li>Mais direção para executar</li>
+            </ul>
           </div>
         </div>
       </div>
@@ -920,14 +1182,12 @@
     <section class="section" id="planos">
       <div class="container">
         <div class="section-header">
-          <h2>Escolha seu plano</h2>
-          <p>
-            Comece sem risco e evolua para a experiência completa quando quiser mais performance e mais inteligência no processo.
-          </p>
+          <h2>Escolha sua experiência</h2>
+          <p>O Ultra é a forma mais completa de viver tudo o que o Kronia entrega.</p>
         </div>
 
         <div class="plans">
-          <article class="plan-card">
+          <article class="plan">
             <div class="plan-name">Free</div>
             <div class="plan-subtitle">Entrada simples para conhecer a plataforma.</div>
 
@@ -940,37 +1200,37 @@
 
             <ul class="plan-list">
               <li>Acesso básico</li>
-              <li>Exploração inicial da plataforma</li>
-              <li>Entrada sem custo</li>
+              <li>Exploração inicial</li>
+              <li>Sem custo</li>
             </ul>
 
-            <a href="/app" class="btn btn-secondary">Começar</a>
+            <a href="/app" class="btn btn-secondary">Entrar no Free</a>
           </article>
 
-          <article class="plan-card">
+          <article class="plan">
             <div class="plan-name">Pro</div>
-            <div class="plan-subtitle">Treino com IA para quem quer subir de nível.</div>
+            <div class="plan-subtitle">Treino com mais lógica para quem quer subir de nível.</div>
 
             <div class="price">
               <strong>R$29,90</strong>
               <span>/mês</span>
             </div>
 
-            <div class="price-note">Treino + IA</div>
+            <div class="price-note">Treino + inteligência</div>
 
             <ul class="plan-list">
               <li>Treinos personalizados</li>
-              <li>Ajustes com inteligência</li>
-              <li>Experiência superior ao básico</li>
+              <li>Mais organização no processo</li>
+              <li>Experiência acima do básico</li>
             </ul>
 
             <a href="/app" class="btn btn-secondary">Assinar Pro</a>
           </article>
 
-          <article class="plan-card popular">
-            <div class="popular-badge">MAIS FORTE</div>
+          <article class="plan popular">
+            <div class="popular-badge">RECOMENDADO</div>
             <div class="plan-name">Ultra</div>
-            <div class="plan-subtitle">A experiência completa do Kronia para evolução total.</div>
+            <div class="plan-subtitle">A experiência completa para quem quer tudo integrado no mesmo sistema.</div>
 
             <div class="price">
               <strong>R$59,90</strong>
@@ -980,10 +1240,10 @@
             <div class="price-note">7 dias grátis com acesso completo</div>
 
             <ul class="plan-list">
-              <li>Treino completo com IA</li>
-              <li>Dieta personalizada</li>
-              <li>Mais inteligência, mais profundidade</li>
-              <li>Melhor custo-benefício do produto</li>
+              <li>Treino completo</li>
+              <li>Dieta integrada</li>
+              <li>Mais profundidade e valor</li>
+              <li>Maior percepção premium</li>
             </ul>
 
             <a href="/app" class="btn btn-primary">Começar Ultra agora</a>
@@ -992,76 +1252,12 @@
       </div>
     </section>
 
-    <section class="section" id="comparacao">
-      <div class="container">
-        <div class="section-header">
-          <h2>Compare os planos</h2>
-          <p>
-            Visualmente mais claro para o usuário entender rápido por que o Ultra é o plano ideal.
-          </p>
-        </div>
-
-        <div class="compare">
-          <table>
-            <thead>
-              <tr>
-                <th>Recursos</th>
-                <th>Free</th>
-                <th>Pro</th>
-                <th>Ultra</th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr>
-                <td>Acesso ao app</td>
-                <td class="check">✓</td>
-                <td class="check">✓</td>
-                <td class="check">✓</td>
-              </tr>
-              <tr>
-                <td>Treinos personalizados</td>
-                <td class="dash">—</td>
-                <td class="check">✓</td>
-                <td class="check">✓</td>
-              </tr>
-              <tr>
-                <td>IA para ajuste de treino</td>
-                <td class="dash">—</td>
-                <td class="check">✓</td>
-                <td class="check">✓</td>
-              </tr>
-              <tr>
-                <td>Dieta personalizada</td>
-                <td class="dash">—</td>
-                <td class="dash">—</td>
-                <td class="check">✓</td>
-              </tr>
-              <tr>
-                <td>Experiência completa</td>
-                <td class="dash">—</td>
-                <td class="dash">Parcial</td>
-                <td class="check">✓</td>
-              </tr>
-              <tr>
-                <td>Teste grátis por 7 dias</td>
-                <td class="dash">—</td>
-                <td class="dash">—</td>
-                <td class="check">✓</td>
-              </tr>
-            </tbody>
-          </table>
-        </div>
-      </div>
-    </section>
-
-    <section class="cta-section">
+    <section class="section">
       <div class="container">
         <div class="cta-box">
-          <h2>Comece agora com o Kronia Ultra</h2>
-          <p>
-            Entre com 7 dias grátis, teste a experiência completa e veja na prática como um app premium pode transformar sua rotina de treino e dieta.
-          </p>
-          <a href="/app" class="btn btn-primary">Quero testar grátis</a>
+          <h2>Pronto para evoluir de verdade?</h2>
+          <p>O Kronia transforma esforço em direção. Entre agora e teste o Ultra grátis por 7 dias.</p>
+          <a href="/app" class="btn btn-primary">Quero começar agora</a>
         </div>
       </div>
     </section>
@@ -1070,7 +1266,7 @@
   <footer class="footer">
     <div class="container footer-inner">
       <div>© 2026 Kronia. Todos os direitos reservados.</div>
-      <div>Treino, dieta e inteligência em um só lugar.</div>
+      <div>Treino, dieta e evolução no mesmo sistema.</div>
     </div>
   </footer>
 
